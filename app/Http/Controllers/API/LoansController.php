@@ -46,4 +46,24 @@ class LoansController extends Controller
             'data' => $model
         ], 201);
     }
+
+    public function update(Request $request, string $id)
+    {
+        try {
+            $model = Loan::findOrFail($id);
+
+            $data = $request->only('name', 'summ', 'client_id');
+
+            $model->fill($data)->save();
+
+            return response()->json([
+                'data' => $model
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => "Model with ID {$id} not found"
+            ], 404);
+        }
+    }
 }
