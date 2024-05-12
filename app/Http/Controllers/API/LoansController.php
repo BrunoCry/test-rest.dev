@@ -5,10 +5,16 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Loan;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class LoansController extends Controller
 {
+    /**
+     * Show all models
+     *
+     * @return JsonResponse
+     */
     public function index()
     {
         return response()->json([
@@ -16,6 +22,12 @@ class LoansController extends Controller
         ]);
     }
 
+    /**
+     * Show one of the models
+     *
+     * @param string $id
+     * @return JsonResponse
+     */
     public function show(string $id)
     {
         try {
@@ -32,6 +44,12 @@ class LoansController extends Controller
         }
     }
 
+    /**
+     * Store a new model
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function store(Request $request)
     {
         $validated = $this->validate($request, [
@@ -47,6 +65,13 @@ class LoansController extends Controller
         ], 201);
     }
 
+    /**
+     * Update the model
+     *
+     * @param Request $request
+     * @param string $id
+     * @return JsonResponse
+     */
     public function update(Request $request, string $id)
     {
         try {
@@ -71,6 +96,12 @@ class LoansController extends Controller
         }
     }
 
+    /**
+     * Delete the model
+     *
+     * @param string $id
+     * @return JsonResponse
+     */
     public function delete(string $id)
     {
         try {
