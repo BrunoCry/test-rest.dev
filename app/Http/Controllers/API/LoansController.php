@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Loan;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 
 class LoansController extends Controller
 {
@@ -29,5 +30,20 @@ class LoansController extends Controller
                 'message' => "Model with ID {$id} not found"
             ], 404);
         }
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $this->validate($request, [
+            'name' => 'required',
+            'summ' => 'required|int',
+            'client_id' => 'required|int'
+        ]);
+
+        $model = Loan::create($validated);
+
+        return response()->json([
+            'data' => $model
+        ], 201);
     }
 }
