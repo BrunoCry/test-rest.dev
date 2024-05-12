@@ -52,7 +52,11 @@ class LoansController extends Controller
         try {
             $model = Loan::findOrFail($id);
 
-            $data = $request->only('name', 'summ', 'client_id');
+            $data = $this->validate($request, [
+                'name' => 'string',
+                'summ' => 'int',
+                'client_id' => 'int'
+            ]);
 
             $model->fill($data)->save();
 
