@@ -66,4 +66,19 @@ class LoansController extends Controller
             ], 404);
         }
     }
+
+    public function delete(string $id)
+    {
+        try {
+            $model = Loan::findOrFail($id);
+            $model->delete();
+
+            return response()->json(null, 204);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => "Model with ID {$id} not found"
+            ], 404);
+        }
+    }
 }
