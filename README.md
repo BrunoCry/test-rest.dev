@@ -1,26 +1,73 @@
-# Lumen PHP Framework
+# Тестовое задание RestAPI
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://img.shields.io/packagist/dt/laravel/lumen-framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://img.shields.io/packagist/v/laravel/lumen-framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://img.shields.io/packagist/l/laravel/lumen)](https://packagist.org/packages/laravel/lumen-framework)
+## Установка проекта
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+### Зависимости:
+* `PHP >= 8.1`
+* `MySQL >= 5.6`
+* `phpunit`
 
-> **Note:** In the years since releasing Lumen, PHP has made a variety of wonderful performance improvements. For this reason, along with the availability of [Laravel Octane](https://laravel.com/docs/octane), we no longer recommend that you begin new projects with Lumen. Instead, we recommend always beginning new projects with [Laravel](https://laravel.com).
+1. Склонируйте git-репозиторий:
+```
+git clone git@github.com:BrunoCry/test-rest.dev.git <your_folder>
+```
 
-## Official Documentation
+2. Установите необходимые зависимости:
+```
+composer install
+```
 
-Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
+3. Установите соединение с базой данных MySQL, изменив следующие параметры в конфигурационном файле `.env`:
+```
+DB_HOST=     # IP адрес сервера, где расположена база даннных (по умолчанию localhost)
+DB_PORT=     # Порт подключения к базе даных (по умолчанию localhost)
+DB_DATABASE= # Название базы данных
+DB_USERNAME= # Пользователь для установки соединения
+DB_PASSWORD= # Пароль пользователя
+```
 
-## Contributing
+4. Выполните миграции:
+```
+php artisan migrate
+```
 
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+5. Для локальной проверки можно запустить тестовый сервер:
+```
+cd <путь_к_корневой_директории_проекта>
+php -S localhost:8080 -t public
+```
+**Для использования проекта может потребоваться дальнейшая настройка nginx/apache!**
 
-## Security Vulnerabilities
+### Установка сборщика ошибок Sentry
+1. Зарегистрируйте аккаунт на платформе [Sentry](https://sentry.io/);
+2. Выберите в качестве шаблона проекта **Laravel**;
+3. Установите параметры соединения Sentry в `.env`:
+```
+SENTRY_LARAVEL_DSN=
+SENTRY_TRACES_SAMPLE_RATE=
+SENTRY_PROFILES_SAMPLE_RATE=
+```
+4. Создайте конфигурационый файл Sentry:
+```
+cp vendor/sentry/sentry-laravel/config/sentry.php config/sentry.php
+```
+5. Для проверки соединения выполните команду `php artisan sentry:test`
 
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+При правильной настройке должно сгенерироваться необработанное исключение, которое будет отправлено на сервер.
 
-## License
+### Тестирование
+API данного проекта покрыто unit-тестами для выявления потенциальных ошибок в работе.
+Тестирование проекта:
+```
+phpunit
+```
 
-The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Использование API
+| Метод    | URI               | Описание                                 | Параметры                                                                                                                         |
+|----------|-------------------|------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| `GET`    | `/api/loans`      | Получение всех существующих займов.      | -                                                                                                                                 |
+| `GET `   | `/api/loans/{id}` | Получение определенного займа по его ID  | **id** - номер займа                                                                                                              |
+| `POST`   | `/api/loans`      | Создание нового займа                    | **name** - название займа;<br> **summ** - сумма займа;<br> **client_id** - ID клиента                                             |
+| `PUT`    | `/api/loans/{id}` | Обновление информации о займе            | **id** - номер займа;<br> (opt) **name** - название займа;<br> (opt) **summ** - сумма займа;<br> (opt) **client_id** - ID клиента |
+| `DELETE` | `/api/loans/{id}` | Удаление займа                           | **id** - номер займа                                                                                                              |
+
