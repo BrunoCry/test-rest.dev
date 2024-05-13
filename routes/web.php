@@ -18,3 +18,7 @@ use Laravel\Lumen\Routing\Router;
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->get('/sentry-test', function () {
+    throw new Exception('Test error');
+});
